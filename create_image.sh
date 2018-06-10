@@ -138,7 +138,7 @@ done
 
 # Create a 20MB image with 1 active FAT32 partition
 fallocate -l $(( 20 * 1024 * 1024 )) "$OUTFILE"
-cat > fdisk.cmd <<-EOF
+fdisk -t dos "$OUTFILE" <<-EOF
 	o
 	n
 	p
@@ -150,8 +150,6 @@ cat > fdisk.cmd <<-EOF
 	a
 	w
 EOF
-fdisk -t dos "$OUTFILE" < fdisk.cmd
-rm -f fdisk.cmd
 
 FATPART=$(kpartx -sav "$OUTFILE" 2>/dev/null | cut -d ' ' -f 3)
 mkfs.vfat "/dev/mapper/${FATPART}"
