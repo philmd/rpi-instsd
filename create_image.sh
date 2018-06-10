@@ -35,13 +35,12 @@ which mkfs.vfat >/dev/null || exit 1
 which fdisk >/dev/null || exit 1
 which kpartx >/dev/null || exit 1
 which dtc >/dev/null || exit 1
-which lscpu >/dev/null || exit 1
 which mkimage >/dev/null || exit 1
 which python >/dev/null || exit 1
 which xz >/dev/null || exit 1
 test -e /usr/include/lzma.h || exit 1
 
-NR_CPUS=$(lscpu -p | grep -v '#' | wc -l)
+NR_CPUS=$(getconf _NPROCESSORS_ONLN)
 
 # Download firmware if not already available
 if [ ! -d firmware ]; then
