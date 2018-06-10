@@ -26,6 +26,8 @@ fi
 which ${CROSS_COMPILE_ARMV6}gcc >/dev/null || exit 1
 which ${CROSS_COMPILE_ARMV7}gcc >/dev/null || exit 1
 which ${CROSS_COMPILE_AARCH64}gcc >/dev/null || exit 1
+which aclocal >/dev/null || exit 1
+which autoreconf >/dev/null || exit 1
 which make >/dev/null || exit 1
 which git >/dev/null || exit 1
 which fallocate >/dev/null || exit 1
@@ -35,6 +37,9 @@ which kpartx >/dev/null || exit 1
 which dtc >/dev/null || exit 1
 which lscpu >/dev/null || exit 1
 which mkimage >/dev/null || exit 1
+which python >/dev/null || exit 1
+which xz >/dev/null || exit 1
+test -e /usr/include/lzma.h || exit 1
 
 NR_CPUS=$(lscpu -p | grep -v '#' | wc -l)
 
@@ -108,6 +113,7 @@ function build_arch()
     # Build grub
     (
         cd grub
+        test -e configure || ./autogen.sh
         BUILDDIR="build-$TARGET_ARCH"
         rm -rf "$BUILDDIR"
         mkdir -p "$BUILDDIR"
